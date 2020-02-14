@@ -1,0 +1,49 @@
+.app-header {
+    background-color: #263238;
+    height: 36px;
+    padding: 8px 32px 8px 16px;
+    color: white;
+}
+[class*=MuiFilledInput-root],#searchBoxIcon{
+    color:  #c0c0c0 !important;
+    opacity: 1;
+    padding: 0px !important;
+    border: none !important;
+    outline: none !important;
+}
+[class*=MuiFilledInput-root]:focus{
+    border-bottom: 2px solid white !important;
+    z-index: 1;
+}
+[class*="MuiFilledInput-input"] {
+    padding-top: 0px !important;
+    padding-bottom: 5px !important;
+    font-size: 5px;
+}
+[class*="MuiFilledInput-input"]::-webkit-input-placeholder{
+    font-size: 10px !important;
+}
+
+[class*="MuiFilledInput-underline"]:focus, [class*="MuiFilledInput-focused"]{
+    border-bottom: 2px solid white !important;
+    z-index: 1;
+}
+[class*="MuiButtonBase-root"]{
+    height: 30px;
+    width: 45px;
+}
+.tabs {
+    margin-bottom: 20px;
+}
+
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+
+.red {
+    color: red;
+}

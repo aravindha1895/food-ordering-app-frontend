@@ -19,6 +19,8 @@ import Input from "@material-ui/core/Input";
 import PropTypes from "prop-types";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import { Link } from "react-router-dom";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+
 const customStyles = {
   content: {
     top: "50%",
@@ -30,6 +32,7 @@ const customStyles = {
     transform: "translate(-50%, -50%)"
   }
 };
+
 const formControlWidth = { width: 400 };
 const TabContainer = function(props) {
   return (
@@ -90,7 +93,9 @@ class Header extends Component {
       isRegSuccess: true,
       isLoginSuccess: true,
       regErrorMsg: "dd",
-      loginErrMsg: ""
+      loginErrMsg: "",
+      isDisplayRegSnackBox: false,
+      isDisplayLoginSnackBox: false
     });
   };
 
@@ -102,14 +107,56 @@ class Header extends Component {
     this.setState({ value });
   };
   loginClickHandler = () => {
-    this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
+   /* this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
     this.state.loginPassword === "" ? this.setState({ loginPasswordRequired: "dispBlock" }) : this.setState({ loginPasswordRequired: "dispNone" });
     this.validateContactNumber(this.state.username) === false && this.state.username !== "" ? this.setState({ userNameRegEx: "dispBlock" }) : this.setState({ userNameRegEx: "dispNone" });
 
-    if( this.state.username === "" || this.state.loginPassword === "" || this.validateContactNumber(this.state.username) === false){
+    if (this.state.username === "" || this.state.loginPassword === "" || this.validateContactNumber(this.state.username) === false) {
       return;
-    }
-    alert('LOGIN SUCCESS');
+    }*/
+
+    const dataLogin = null;
+    let xhrLogin = new XMLHttpRequest();
+    const context1 = this;
+    xhrLogin.addEventListener("readystatechange", function() {
+      if (this.readyState === 4 && this.status==200) {
+        console.log(this);
+        console.log(this.responseText);
+        sessionStorage.setItem("uuid", JSON.parse(this.responseText).id);
+        sessionStorage.setItem("access-token", xhrLogin.getResponseHeader("access-token"));
+
+        context1.setState({
+          loggedIn: true
+        });
+        context1.setState({
+          isLoginSuccess: true
+        });
+        context1.setState({
+          loginErrMsg: ""
+        });
+        context1.setState({ isDisplayLoginSnackBox: true });
+        
+        setTimeout(function() {
+          context1.setState({ isDisplayLoginSnackBox: false });
+        }, 3000);
+        context1.closeModalHandler();
+      } else if (this.readyState === 4 && this.status==401){
+        console.log(this);
+        context1.setState({
+          isLoginSuccess: false
+        });
+        context1.setState({
+          loginErrMsg: JSON.parse(this.responseText).message
+        });
+      }
+    });
+    xhrLogin.open("POST", "http://localhost:8080/api/" + "/customer/login");
+    xhrLogin.setRequestHeader("authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword));
+   // xhrLogin.setRequestHeader("Content-Type", "application/json");
+    xhrLogin.setRequestHeader("Cache-Control", "no-cache");
+    xhrLogin.send(dataLogin);
+
+
   };
 
   inputUsernameChangeHandler = e => {
@@ -122,7 +169,7 @@ class Header extends Component {
 
   registerClickHandler = () => {
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
-    this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
+    // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.registerPassword === "" ? this.setState({ registerPasswordRequired: "dispBlock" }) : this.setState({ registerPasswordRequired: "dispNone" });
     this.state.contact === "" ? this.setState({ contactRequired: "dispBlock" }) : this.setState({ contactRequired: "dispNone" });
@@ -132,23 +179,28 @@ class Header extends Component {
 
     if (
       this.state.firstname === "" ||
-      this.state.lastname === "" ||
       this.state.email === "" ||
-      this.state.registerPassword ||
+      this.state.registerPassword === "" ||
       this.state.contact === "" ||
       this.validateEmail() === false ||
-      this.validateContectNumber() === false ||
+      this.validateContactNumber(this.state.contact) === false ||
       this.validatePassword() === false
     ) {
+      console.log("return");
       return;
     }
-    alert("REG SUCCESS");
+
+    this.setState({ isDisplayRegSnackBox: true });
+    const context = this;
+    setTimeout(function() {
+      context.setState({ isDisplayRegSnackBox: false });
+    }, 3000);
   };
   validateEmail = () => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(this.state.email).toLowerCase());
   };
-  validateContactNumber = (contact) => {
+  validateContactNumber = contact => {
     var re = /^(([1-9]{1})[0-9]{9})$/;
     return re.test(String(contact).toLowerCase());
   };
@@ -249,6 +301,7 @@ class Header extends Component {
                     <br />
                   </div>
                 )}
+
                 <Button variant="contained" color="primary" onClick={this.loginClickHandler}>
                   LOGIN
                 </Button>
@@ -322,6 +375,16 @@ class Header extends Component {
               </TabContainer>
             )}
           </Modal>
+          {this.state.isDisplayLoginSnackBox && (
+            <div style={{ maxWidth: "400px" }} className="snackbox">
+              <SnackbarContent message="Logged in successfully!" />
+            </div>
+          )}
+          {this.state.isDisplayRegSnackBox && (
+            <div style={{ maxWidth: "400px" }} className="snackbox">
+              <SnackbarContent message="Registered successfully! Please login now!" />
+            </div>
+          )}
         </header>
       </div>
     );

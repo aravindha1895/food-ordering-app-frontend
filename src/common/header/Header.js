@@ -107,7 +107,7 @@ class Header extends Component {
     this.setState({ value });
   };
   loginClickHandler = () => {
-   /* this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
+    /* this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
     this.state.loginPassword === "" ? this.setState({ loginPasswordRequired: "dispBlock" }) : this.setState({ loginPasswordRequired: "dispNone" });
     this.validateContactNumber(this.state.username) === false && this.state.username !== "" ? this.setState({ userNameRegEx: "dispBlock" }) : this.setState({ userNameRegEx: "dispNone" });
 
@@ -119,7 +119,7 @@ class Header extends Component {
     let xhrLogin = new XMLHttpRequest();
     const context1 = this;
     xhrLogin.addEventListener("readystatechange", function() {
-      if (this.readyState === 4 && this.status==200) {
+      if (this.readyState === 4 && this.status == 200) {
         console.log(this);
         console.log(this.responseText);
         sessionStorage.setItem("uuid", JSON.parse(this.responseText).id);
@@ -135,12 +135,12 @@ class Header extends Component {
           loginErrMsg: ""
         });
         context1.setState({ isDisplayLoginSnackBox: true });
-        
+
         setTimeout(function() {
           context1.setState({ isDisplayLoginSnackBox: false });
         }, 3000);
         context1.closeModalHandler();
-      } else if (this.readyState === 4 && this.status==401){
+      } else if (this.readyState === 4 && this.status == 401) {
         console.log(this);
         context1.setState({
           isLoginSuccess: false
@@ -152,11 +152,9 @@ class Header extends Component {
     });
     xhrLogin.open("POST", "http://localhost:8080/api/" + "/customer/login");
     xhrLogin.setRequestHeader("authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword));
-   // xhrLogin.setRequestHeader("Content-Type", "application/json");
+    // xhrLogin.setRequestHeader("Content-Type", "application/json");
     xhrLogin.setRequestHeader("Cache-Control", "no-cache");
     xhrLogin.send(dataLogin);
-
-
   };
 
   inputUsernameChangeHandler = e => {
@@ -168,7 +166,7 @@ class Header extends Component {
   };
 
   registerClickHandler = () => {
-    this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
+  /*  this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
     // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.registerPassword === "" ? this.setState({ registerPasswordRequired: "dispBlock" }) : this.setState({ registerPasswordRequired: "dispNone" });
@@ -188,14 +186,51 @@ class Header extends Component {
     ) {
       console.log("return");
       return;
-    }
+    }*/
 
-    this.setState({ isDisplayRegSnackBox: true });
-    const context = this;
-    setTimeout(function() {
-      context.setState({ isDisplayRegSnackBox: false });
-    }, 3000);
-  };
+    let dataSignup = ({
+      "contact_number": this.state.contact,
+      "email_address": this.state.email,
+      "first_name":this.state.firstname,
+      "last_name": this.state.lastname,
+      "password": this.state.registerPassword
+    });
+    
+    const context1 = this;
+    let xhrSignup = new XMLHttpRequest();
+    let that = this;
+    xhrSignup.addEventListener("readystatechange", function() {
+      if (this.readyState === 4 && this.status == 201) {
+        that.setState({
+          registrationSuccess: true
+        });
+        context1.setState({
+          isRegSuccess: true
+        });
+        context1.setState({
+          regErrorMsg: ""
+        });
+        context1.setState({ isDisplayRegSnackBox: true });
+        setTimeout(function() {
+          context1.setState({ isDisplayRegSnackBox: false });
+        }, 3000);
+      } 
+      else if (this.readyState === 4 && this.status == 400) {
+        console.log(this);
+        context1.setState({
+          isRegSuccess: false
+        });
+        context1.setState({
+          regErrorMsg: JSON.parse(this.responseText).message
+        });
+      }
+    });
+
+    xhrSignup.open("POST", "http://localhost:8080/api" + "/customer/signup");
+    xhrSignup.setRequestHeader("Content-Type", "application/json");
+    //xhrSignup.setRequestHeader("Cache-Control", "no-cache");
+    xhrSignup.send(JSON.stringify(dataSignup));
+  }
   validateEmail = () => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(this.state.email).toLowerCase());

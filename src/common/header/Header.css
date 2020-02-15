@@ -32,8 +32,11 @@
     height: 30px;
     width: 45px;
 }
+[class*="MuiInputBase-input"]{
+    width: '400px' !important;
+}
 .tabs {
-    margin-bottom: 20px;
+   margin-bottom: 20px;
 }
 
 .dispNone {

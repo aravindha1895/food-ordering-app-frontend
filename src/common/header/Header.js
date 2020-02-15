@@ -164,9 +164,33 @@ class Header extends Component {
   inputLoginPasswordChangeHandler = e => {
     this.setState({ loginPassword: e.target.value });
   };
+  logoutHandler = (e) => {
 
+    const dataLogin = null;
+    let xhrLogin = new XMLHttpRequest();
+    const context1 = this;
+    xhrLogin.addEventListener("readystatechange", function() {
+      if (this.readyState === 4 && this.status == 200) {
+        console.log(this);
+        console.log(this.responseText);
+        sessionStorage.removeItem("uuid");
+        sessionStorage.removeItem("access-token");
+
+        context1.setState({
+          loggedIn: false
+        });
+      } else {
+        console.log(this);
+      }
+    });
+    xhrLogin.open("POST", "http://localhost:8080/api/" + "/customer/logout");
+    xhrLogin.setRequestHeader("authorization", "Bearer " + sessionStorage.getItem("access-token"));
+    // xhrLogin.setRequestHeader("Content-Type", "application/json");
+    xhrLogin.setRequestHeader("Cache-Control", "no-cache");
+    xhrLogin.send(dataLogin);
+  };
   registerClickHandler = () => {
-  /*  this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
+    /*  this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
     // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.registerPassword === "" ? this.setState({ registerPasswordRequired: "dispBlock" }) : this.setState({ registerPasswordRequired: "dispNone" });
@@ -188,14 +212,14 @@ class Header extends Component {
       return;
     }*/
 
-    let dataSignup = ({
-      "contact_number": this.state.contact,
-      "email_address": this.state.email,
-      "first_name":this.state.firstname,
-      "last_name": this.state.lastname,
-      "password": this.state.registerPassword
-    });
-    
+    let dataSignup = {
+      contact_number: this.state.contact,
+      email_address: this.state.email,
+      first_name: this.state.firstname,
+      last_name: this.state.lastname,
+      password: this.state.registerPassword
+    };
+
     const context1 = this;
     let xhrSignup = new XMLHttpRequest();
     let that = this;
@@ -214,8 +238,7 @@ class Header extends Component {
         setTimeout(function() {
           context1.setState({ isDisplayRegSnackBox: false });
         }, 3000);
-      } 
-      else if (this.readyState === 4 && this.status == 400) {
+      } else if (this.readyState === 4 && this.status == 400) {
         console.log(this);
         context1.setState({
           isRegSuccess: false
@@ -230,7 +253,7 @@ class Header extends Component {
     xhrSignup.setRequestHeader("Content-Type", "application/json");
     //xhrSignup.setRequestHeader("Cache-Control", "no-cache");
     xhrSignup.send(JSON.stringify(dataSignup));
-  }
+  };
   validateEmail = () => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(this.state.email).toLowerCase());
@@ -298,6 +321,9 @@ class Header extends Component {
             onClick={this.openModalHandler}
           >
             Login
+          </Button>
+          <Button variant="contained" color="primary" onClick={this.logoutHandler}>
+            Logout
           </Button>
           <Modal ariaHideApp={false} isOpen={this.state.modalIsOpen} contentLabel="Login" onRequestClose={this.closeModalHandler} style={customStyles}>
             <Tabs className="tabs" value={this.state.value} onChange={this.tabChangeHandler}>

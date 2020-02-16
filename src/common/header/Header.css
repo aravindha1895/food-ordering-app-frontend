@@ -1,8 +1,42 @@
 .app-header {
   background-color: #263238;
   height: 36px;
-  padding: 8px 32px 8px 16px;
+  padding: 18px 32px 8px 16px;
   color: white;
+}
+.header-button{
+  float: right;
+}
+.header-search-box{
+  margin: 0;
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@media only screen and (max-width: 700px) {
+  .app-header {
+    background-color: #263238;
+    height: 100px;
+    padding: 18px 32px 8px 16px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+  }
+  .header-search-box{
+    padding-top: 10px;
+    margin-top: 10px;
+    width: 200px;
+    position: relative;
+    top: 5px;
+    left: 100px;
+  }
+.header-button{
+  position: relative;
+  margin-top: 2px;
+  top: -5px;
+  left: auto;
+}
 }
 [class*="MuiFilledInput-root"],
 #searchBoxIcon {
@@ -27,7 +61,7 @@
 
 [class*="MuiFilledInput-underline"]:focus,
 [class*="MuiFilledInput-focused"] {
-  border-bottom: 2px solid white !important;
+  border-bottom: 3px solid white !important;
   z-index: 1;
 }
 [class*="MuiButtonBase-root"] {

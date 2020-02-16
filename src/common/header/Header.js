@@ -164,8 +164,7 @@ class Header extends Component {
   inputLoginPasswordChangeHandler = e => {
     this.setState({ loginPassword: e.target.value });
   };
-  logoutHandler = (e) => {
-
+  logoutHandler = e => {
     const dataLogin = null;
     let xhrLogin = new XMLHttpRequest();
     const context1 = this;
@@ -212,7 +211,7 @@ class Header extends Component {
       return;
     }*/
     this.setState({ value: 0 });
-  /*  let dataSignup = {
+    /*  let dataSignup = {
       contact_number: this.state.contact,
       email_address: this.state.email,
       first_name: this.state.firstname,
@@ -296,22 +295,25 @@ class Header extends Component {
             <path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-8-15.03-8-15.03 0h15.03zM1.02 17h15v2h-15z" />
             <path d="M0 0h24v24H0z" fill="none" />
           </SvgIcon>
-          <FilledInput
-            id="outlined-basic"
-            placeholder="Search by Restaurant Name"
-            variant="outlined"
-            startAdornment={
-              <InputAdornment variant="standard" position="start" id="searchBoxIcon">
-                <SvgIcon {...this.props}>
-                  <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                  <path d="M0 0h24v24H0z" fill="none" />
-                </SvgIcon>
-              </InputAdornment>
-            }
-          />
+          <span className="header-search-box">
+            <FilledInput
+              id="outlined-basic"
+              placeholder="Search by Restaurant Name"
+              variant="outlined"
+              startAdornment={
+                <InputAdornment variant="standard" position="start" id="searchBoxIcon">
+                  <SvgIcon {...this.props}>
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                    <path d="M0 0h24v24H0z" fill="none" />
+                  </SvgIcon>
+                </InputAdornment>
+              }
+            />
+          </span>
           <Button
             variant="contained"
             color="default"
+            className="header-button"
             startIcon={
               <SvgIcon {...this.props}>
                 <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
@@ -322,9 +324,9 @@ class Header extends Component {
           >
             Login
           </Button>
-          <Button variant="contained" color="primary" onClick={this.logoutHandler}>
+          {/*<Button variant="contained" color="primary" onClick={this.logoutHandler}>
             Logout
-          </Button>
+          </Button>*/}
           <Modal ariaHideApp={false} isOpen={this.state.modalIsOpen} contentLabel="Login" onRequestClose={this.closeModalHandler} style={customStyles}>
             <Tabs className="tabs" value={this.state.value} onChange={this.tabChangeHandler}>
               <Tab label="Login" />

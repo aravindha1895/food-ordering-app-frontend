@@ -104,7 +104,7 @@ class Header extends Component {
   };
 
   tabChangeHandler = (event, value) => {
-    this.setState({ value });
+    this.setState({ value: value });
   };
   loginClickHandler = () => {
     /* this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
@@ -153,7 +153,7 @@ class Header extends Component {
     xhrLogin.open("POST", "http://localhost:8080/api/" + "/customer/login");
     xhrLogin.setRequestHeader("authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword));
     // xhrLogin.setRequestHeader("Content-Type", "application/json");
-    xhrLogin.setRequestHeader("Cache-Control", "no-cache");
+    // xhrLogin.setRequestHeader("Cache-Control", "no-cache");
     xhrLogin.send(dataLogin);
   };
 
@@ -186,7 +186,7 @@ class Header extends Component {
     xhrLogin.open("POST", "http://localhost:8080/api/" + "/customer/logout");
     xhrLogin.setRequestHeader("authorization", "Bearer " + sessionStorage.getItem("access-token"));
     // xhrLogin.setRequestHeader("Content-Type", "application/json");
-    xhrLogin.setRequestHeader("Cache-Control", "no-cache");
+    // xhrLogin.setRequestHeader("Cache-Control", "no-cache");
     xhrLogin.send(dataLogin);
   };
   registerClickHandler = () => {
@@ -211,8 +211,8 @@ class Header extends Component {
       console.log("return");
       return;
     }*/
-
-    let dataSignup = {
+    this.setState({ value: 0 });
+  /*  let dataSignup = {
       contact_number: this.state.contact,
       email_address: this.state.email,
       first_name: this.state.firstname,
@@ -252,7 +252,7 @@ class Header extends Component {
     xhrSignup.open("POST", "http://localhost:8080/api" + "/customer/signup");
     xhrSignup.setRequestHeader("Content-Type", "application/json");
     //xhrSignup.setRequestHeader("Cache-Control", "no-cache");
-    xhrSignup.send(JSON.stringify(dataSignup));
+    xhrSignup.send(JSON.stringify(dataSignup));*/
   };
   validateEmail = () => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -335,7 +335,7 @@ class Header extends Component {
               <TabContainer style={{ paddingLeft: 0 }}>
                 <FormControl required style={formControlWidth}>
                   <InputLabel htmlFor="username">Contact No.</InputLabel>
-                  <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
+                  <Input id="username" type="text" value={this.state.username} username={this.state.username} onChange={this.inputUsernameChangeHandler} />
                   <FormHelperText className={this.state.usernameRequired}>
                     <span className="red">required</span>
                   </FormHelperText>
@@ -347,7 +347,7 @@ class Header extends Component {
                 <br />
                 <FormControl required style={formControlWidth}>
                   <InputLabel htmlFor="loginPassword">Password</InputLabel>
-                  <Input id="loginPassword" type="password" loginpassword={this.state.loginPassword} onChange={this.inputLoginPasswordChangeHandler} />
+                  <Input id="loginPassword" type="password" value={this.state.loginPassword} loginpassword={this.state.loginPassword} onChange={this.inputLoginPasswordChangeHandler} />
                   <FormHelperText className={this.state.loginPasswordRequired}>
                     <span className="red">required</span>
                   </FormHelperText>
@@ -373,7 +373,7 @@ class Header extends Component {
               <TabContainer>
                 <FormControl required style={formControlWidth}>
                   <InputLabel htmlFor="firstname">First Name</InputLabel>
-                  <Input id="firstname" type="text" firstname={this.state.firstname} onChange={this.inputFirstNameChangeHandler} />
+                  <Input id="firstname" type="text" value={this.state.firstname} firstname={this.state.firstname} onChange={this.inputFirstNameChangeHandler} />
                   <FormHelperText className={this.state.firstnameRequired}>
                     <span className="red">required</span>
                   </FormHelperText>
@@ -382,13 +382,13 @@ class Header extends Component {
                 <br />
                 <FormControl style={formControlWidth}>
                   <InputLabel htmlFor="lastname">Last Name</InputLabel>
-                  <Input id="lastname" type="text" lastname={this.state.lastname} onChange={this.inputLastNameChangeHandler} />
+                  <Input id="lastname" type="text" value={this.state.lastname} lastname={this.state.lastname} onChange={this.inputLastNameChangeHandler} />
                 </FormControl>
                 <br />
                 <br />
                 <FormControl required style={formControlWidth}>
                   <InputLabel htmlFor="email">Email</InputLabel>
-                  <Input id="email" type="text" email={this.state.email} onChange={this.inputEmailChangeHandler} />
+                  <Input id="email" type="text" value={this.state.email} email={this.state.email} onChange={this.inputEmailChangeHandler} />
                   <FormHelperText className={this.state.emailRequired}>
                     <span className="red">required</span>
                   </FormHelperText>
@@ -400,7 +400,7 @@ class Header extends Component {
                 <br />
                 <FormControl required style={formControlWidth}>
                   <InputLabel htmlFor="registerPassword">Password</InputLabel>
-                  <Input id="registerPassword" type="password" registerpassword={this.state.registerPassword} onChange={this.inputRegisterPasswordChangeHandler} />
+                  <Input id="registerPassword" type="password" value={this.state.registerPassword} registerpassword={this.state.registerPassword} onChange={this.inputRegisterPasswordChangeHandler} />
                   <FormHelperText className={this.state.registerPasswordRequired}>
                     <span className="red">required</span>
                   </FormHelperText>
@@ -412,7 +412,7 @@ class Header extends Component {
                 <br />
                 <FormControl required style={formControlWidth}>
                   <InputLabel htmlFor="contact">Contact No.</InputLabel>
-                  <Input id="contact" type="text" contact={this.state.contact} onChange={this.inputContactChangeHandler} />
+                  <Input id="contact" type="text" value={this.state.contact} contact={this.state.contact} onChange={this.inputContactChangeHandler} />
                   <FormHelperText className={this.state.contactRequired}>
                     <span className="red">required</span>
                   </FormHelperText>

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import "./Header.css";
 import SvgIcon from "@material-ui/core/SvgIcon";
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
+// import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+// import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FilledInput from "@material-ui/core/FilledInput";
-import TextField from "@material-ui/core/TextField";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+// import TextField from "@material-ui/core/TextField";
+// import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Button from "@material-ui/core/Button";
 
 import Modal from "react-modal";
@@ -18,8 +18,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import PropTypes from "prop-types";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const customStyles = {
   content: {
@@ -95,7 +98,10 @@ class Header extends Component {
       regErrorMsg: "dd",
       loginErrMsg: "",
       isDisplayRegSnackBox: false,
-      isDisplayLoginSnackBox: false
+      isDisplayLoginSnackBox: false,
+      loginResponse: {},
+      anchorEl: null,
+      loggedIn: sessionStorage.getItem("access-token") != null
     });
   };
 
@@ -106,20 +112,27 @@ class Header extends Component {
   tabChangeHandler = (event, value) => {
     this.setState({ value: value });
   };
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
   loginClickHandler = () => {
-    /* this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
+    this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
     this.state.loginPassword === "" ? this.setState({ loginPasswordRequired: "dispBlock" }) : this.setState({ loginPasswordRequired: "dispNone" });
     this.validateContactNumber(this.state.username) === false && this.state.username !== "" ? this.setState({ userNameRegEx: "dispBlock" }) : this.setState({ userNameRegEx: "dispNone" });
 
     if (this.state.username === "" || this.state.loginPassword === "" || this.validateContactNumber(this.state.username) === false) {
       return;
-    }*/
+    }
 
     const dataLogin = null;
     let xhrLogin = new XMLHttpRequest();
     const context1 = this;
     xhrLogin.addEventListener("readystatechange", function() {
-      if (this.readyState === 4 && this.status == 200) {
+      if (this.readyState === 4 && this.status === 200) {
         console.log(this);
         console.log(this.responseText);
         sessionStorage.setItem("uuid", JSON.parse(this.responseText).id);
@@ -134,13 +147,14 @@ class Header extends Component {
         context1.setState({
           loginErrMsg: ""
         });
+        context1.setState({ loginResponse: JSON.parse(this.responseText) });
         context1.setState({ isDisplayLoginSnackBox: true });
 
         setTimeout(function() {
           context1.setState({ isDisplayLoginSnackBox: false });
         }, 3000);
         context1.closeModalHandler();
-      } else if (this.readyState === 4 && this.status == 401) {
+      } else if (this.readyState === 4 && this.status === 401) {
         console.log(this);
         context1.setState({
           isLoginSuccess: false
@@ -150,7 +164,7 @@ class Header extends Component {
         });
       }
     });
-    xhrLogin.open("POST", "http://localhost:8080/api/" + "/customer/login");
+    xhrLogin.open("POST", "http://localhost:8080/api" + "/customer/login");
     xhrLogin.setRequestHeader("authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword));
     // xhrLogin.setRequestHeader("Content-Type", "application/json");
     // xhrLogin.setRequestHeader("Cache-Control", "no-cache");
@@ -169,7 +183,7 @@ class Header extends Component {
     let xhrLogin = new XMLHttpRequest();
     const context1 = this;
     xhrLogin.addEventListener("readystatechange", function() {
-      if (this.readyState === 4 && this.status == 200) {
+      if (this.readyState === 4 && this.status === 200) {
         console.log(this);
         console.log(this.responseText);
         sessionStorage.removeItem("uuid");
@@ -182,14 +196,14 @@ class Header extends Component {
         console.log(this);
       }
     });
-    xhrLogin.open("POST", "http://localhost:8080/api/" + "/customer/logout");
+    xhrLogin.open("POST", "http://localhost:8080/api" + "/customer/logout");
     xhrLogin.setRequestHeader("authorization", "Bearer " + sessionStorage.getItem("access-token"));
     // xhrLogin.setRequestHeader("Content-Type", "application/json");
     // xhrLogin.setRequestHeader("Cache-Control", "no-cache");
     xhrLogin.send(dataLogin);
   };
   registerClickHandler = () => {
-    /*  this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
+    this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
     // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.registerPassword === "" ? this.setState({ registerPasswordRequired: "dispBlock" }) : this.setState({ registerPasswordRequired: "dispNone" });
@@ -209,9 +223,9 @@ class Header extends Component {
     ) {
       console.log("return");
       return;
-    }*/
-    this.setState({ value: 0 });
-    /*  let dataSignup = {
+    }
+
+    let dataSignup = {
       contact_number: this.state.contact,
       email_address: this.state.email,
       first_name: this.state.firstname,
@@ -223,7 +237,7 @@ class Header extends Component {
     let xhrSignup = new XMLHttpRequest();
     let that = this;
     xhrSignup.addEventListener("readystatechange", function() {
-      if (this.readyState === 4 && this.status == 201) {
+      if (this.readyState === 4 && this.status === 201) {
         that.setState({
           registrationSuccess: true
         });
@@ -234,10 +248,11 @@ class Header extends Component {
           regErrorMsg: ""
         });
         context1.setState({ isDisplayRegSnackBox: true });
+        context1.setState({ value: 0 });
         setTimeout(function() {
           context1.setState({ isDisplayRegSnackBox: false });
         }, 3000);
-      } else if (this.readyState === 4 && this.status == 400) {
+      } else if (this.readyState === 4 && this.status === 400) {
         console.log(this);
         context1.setState({
           isRegSuccess: false
@@ -251,7 +266,7 @@ class Header extends Component {
     xhrSignup.open("POST", "http://localhost:8080/api" + "/customer/signup");
     xhrSignup.setRequestHeader("Content-Type", "application/json");
     //xhrSignup.setRequestHeader("Cache-Control", "no-cache");
-    xhrSignup.send(JSON.stringify(dataSignup));*/
+    xhrSignup.send(JSON.stringify(dataSignup));
   };
   validateEmail = () => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -286,7 +301,10 @@ class Header extends Component {
   inputContactChangeHandler = e => {
     this.setState({ contact: e.target.value });
   };
-
+  handleMyProfile = e => {
+    console.log("My profile handler called");
+    /* Link profile page here after creation  */
+  };
   render() {
     return (
       <div>
@@ -310,20 +328,37 @@ class Header extends Component {
               }
             />
           </span>
-          <Button
-            variant="contained"
-            color="default"
-            className="header-button"
-            startIcon={
-              <SvgIcon {...this.props}>
-                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                <path d="M0 0h24v24H0z" fill="none" />
-              </SvgIcon>
-            }
-            onClick={this.openModalHandler}
-          >
-            Login
-          </Button>
+          {!this.state.loggedIn && (
+            <Button variant="contained" color="default" className="header-button" onClick={this.openModalHandler}>
+              <AccountCircleIcon />
+              Login
+            </Button>
+          )}
+          {this.state.loggedIn && (
+            <Button variant="contained" color="default" className="header-button header-profile-button" onClick={this.handleClick}>
+              <AccountCircleIcon />
+              {this.state.loginResponse["first_name"]}
+            </Button>
+          )}
+
+          <Menu id="simple-menu" anchorEl={this.state.anchorEl} keepMounted open={Boolean(this.state.anchorEl)}>
+            <MenuItem
+              onClick={() => {
+                this.handleClose();
+                this.handleMyProfile();
+              }}
+            >
+              My Profile
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                this.handleClose();
+                this.logoutHandler();
+              }}
+            >
+              Logout
+            </MenuItem>
+          </Menu>
           {/*<Button variant="contained" color="primary" onClick={this.logoutHandler}>
             Logout
           </Button>*/}

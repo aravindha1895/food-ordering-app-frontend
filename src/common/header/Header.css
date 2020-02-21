@@ -1,0 +1,102 @@
+.app-header {
+  background-color: #263238;
+  height: 36px;
+  padding: 18px 32px 8px 16px;
+  color: white;
+}
+.header-button {
+  float: right;
+}
+.header-profile-button {
+  background-color: #263238 !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: white !important;
+}
+.header-search-box {
+  margin: 0;
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@media only screen and (max-width: 600px) {
+  .app-header {
+    background-color: #263238;
+    height: 100px;
+    padding: 18px 32px 8px 16px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+  }
+  .header-search-box {
+    padding-top: 10px;
+    margin-top: 10px;
+    margin-top: 10px;
+    width: 200px;
+    position: relative;
+    top: 5px;
+    left: 100px;
+  }
+  .header-button {
+    position: absolute !important;
+    top: 80px !important;
+    left: auto;
+    width: 150px !important;
+  }
+}
+[class*="MuiFilledInput-root"],
+#searchBoxIcon {
+  color: #c0c0c0 !important;
+  opacity: 1;
+  padding: 0px !important;
+  border: none !important;
+  outline: none !important;
+}
+[class*="MuiFilledInput-root"]:focus {
+  border-bottom: 2px solid white !important;
+  z-index: 1;
+}
+[class*="MuiFilledInput-input"] {
+  padding-top: 0px !important;
+  padding-bottom: 5px !important;
+  font-size: 5px;
+}
+[class*="MuiFilledInput-input"]::-webkit-input-placeholder {
+  font-size: 10px !important;
+}
+
+[class*="MuiFilledInput-underline"]:focus,
+[class*="MuiFilledInput-focused"] {
+  border-bottom: 3px solid white !important;
+  z-index: 1;
+}
+[class*="MuiButtonBase-root"] {
+  height: 35px;
+  width: auto;
+  margin-top: 0px !important;
+}
+[class*="MuiInputBase-input"] {
+  width: "400px" !important;
+}
+.tabs {
+  margin-bottom: 20px;
+}
+
+.dispNone {
+  display: none;
+}
+
+.dispBlock {
+  display: block;
+}
+
+.red {
+  color: red;
+}
+.snackbox {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+}

@@ -1,0 +1,32 @@
+.restaurant-info {
+    background-color: lightgray;
+    height: 250px;
+    display: flex;
+    flex-direction: row;
+}
+
+#rest-img {
+    height: 200px;
+    width: 250px;
+    margin: 25px;
+}
+
+.rest-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.parent-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+@media only screen and (max-width: 600px) {
+    .restaurant-info {
+        display: flex;
+        justify-content: space-around;
+    }
+}

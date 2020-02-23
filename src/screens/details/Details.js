@@ -23,7 +23,8 @@ class Details extends Component {
             restaurantDetails: {},
             addressDetails: {},
             categories: [],
-            itemNames: []
+            itemObjArr: [],
+            countArr: []
         }
     }
     componentWillMount() {
@@ -43,7 +44,6 @@ class Details extends Component {
                 that.state.addressDetails.locality = location;
                 let addDetails = that.state.addressDetails;
                 that.setState({ addressDetails: addDetails });
-                console.log(that.state.addressDetails.locality);
                 that.setState({
                     categories: that.state.restaurantDetails.categories
                 });
@@ -51,6 +51,37 @@ class Details extends Component {
         });
         xhr.open("GET", "http://localhost:8080/api/restaurant/2461973c-a238-11e8-9077-720006ceb890");
         xhr.send(data);
+    }
+
+    clickPlusHandler = (catindex, itemindex) => {
+        let itemList = this.state.itemObjArr;
+        let itemObj = this.state.categories[catindex].item_list[itemindex];
+        let counts = this.state.countArr;
+
+        let flag = false;
+        let foundIndex;
+        for (let i = 0; i < itemList.length; i++) {
+            if (itemList[i].item_name === itemObj.item_name) {
+                console.log('found');
+                foundIndex = i;
+                flag = true;
+                break;
+            } else {
+                flag = false;
+            }
+        }
+
+        if (flag) {
+            counts[foundIndex] = counts[foundIndex] + 1;
+            this.setState({ countArr: counts });
+        } else {
+            itemList.push(itemObj);
+            this.setState({ itemObjArr: itemList });
+            counts.push(1);
+            this.setState({ countArr: counts });
+        }
+        console.log(this.state.itemObjArr);
+        console.log(this.state.countArr);
     }
     render() {
         let location = this.state.addressDetails.locality;
@@ -107,28 +138,27 @@ class Details extends Component {
                 </div>
                 <div className="menu-cart-section">
                     <div className="menu-item">
-                        {this.state.categories.map((cats, index) => (
-                            <span key={"categroy" + index}>{cats.category_name.toUpperCase()}
+                        {this.state.categories.map((cats, catindex) => (
+                            <span key={"categroy" + catindex}>{cats.category_name.toUpperCase()}
                                 <Divider />
-                                {cats.item_list.map(items => (
-                                    <div className="item-row">
+                                {cats.item_list.map((items, itemindex) => (
+                                    <div className="item-row" key={"item-row" + items.item_name + "-" + catindex + "-" + itemindex}>
                                         {
-                                            items.item_type === 'VEG' ? <i className="fa fa-circle" aria-hidden="true" style={{ color: 'green', marginRight: '15px' }}></i> :
-                                                <i className="fa fa-circle" aria-hidden="true" style={{ color: 'red', marginRight: '15px' }}></i>
+                                            items.item_type === 'VEG' ? <i key={"vegicon-" + items.item_name + "-" + catindex + "-" + itemindex} className="fa fa-circle" aria-hidden="true" style={{ color: 'green', marginRight: '15px' }}></i> :
+                                                <i key={"nonvegicon-" + items.item_name + "-" + catindex + "-" + itemindex} className="fa fa-circle" aria-hidden="true" style={{ color: 'red', marginRight: '15px' }}></i>
                                         }
                                         {
                                             i = items.item_name.split(" "),
-                                            i.map((c) => (
-                                                <span key={"item-" + items.item_name}>{c.charAt(0).toUpperCase() + c.slice(1) + " "}</span>
+                                            i.map((c, wordindex) => (
+                                                <span key={"item-" + items.item_name + "-" + catindex + "-" + itemindex + "-" + wordindex}>{c.charAt(0).toUpperCase() + c.slice(1) + " "}</span>
                                             ))
                                         }
                                         {
                                             <span className="item-right">
                                                 <i className="fa fa-inr" aria-hidden="true"></i>
                                                 <span>{" " + items.price}</span>
-                                                <AddIcon style={{marginLeft: '100px'}}></AddIcon>
+                                                <AddIcon style={{ marginLeft: '100px', cursor: 'pointer' }} onClick={() => this.clickPlusHandler(catindex, itemindex)}></AddIcon>
                                             </span>
-
                                         }
                                     </div>
                                 ))}
@@ -139,13 +169,27 @@ class Details extends Component {
                     </div>
                     <div className="cart">
                         <Card>
-                            <CardHeader title={"My Cart"} classes={{title: classes.title}}
-                                avatar = {
+                            <CardHeader title={"My Cart"} classes={{ title: classes.title }}
+                                avatar={
                                     <Badge badgeContent={0} color="primary" showZero>
-                                    <ShoppingCartIcon></ShoppingCartIcon>
+                                        <ShoppingCartIcon></ShoppingCartIcon>
                                     </Badge>
                                 }
                             ></CardHeader>
+                            {this.state.itemObjArr.map((itemobj, itemobjindex) => (
+                                <CardContent key={"cartcontent-"+itemobjindex}>
+                                    {
+                                    itemobj.item_type === 'VEG' ? <i className="fa fa-stop-circle-o" aria-hidden="true" style={{color: 'green'}}></i> : 
+                                    <i className="fa fa-stop-circle-o" aria-hidden="true" style={{color: 'red'}}></i>
+                                    }
+                                    {
+                                        i = itemobj.item_name.split(" "),
+                                        i.map((c, wordindex) => (
+                                            <span key={"cartitem-"+wordindex}>{c.charAt(0).toUpperCase() + c.slice(1) + " "}</span>
+                                        ))
+                                    }
+                                </CardContent>
+                            ))}
                         </Card>
                     </div>
                 </div>

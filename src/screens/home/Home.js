@@ -56,12 +56,15 @@ class Home extends Component {
   }
   onRestaurantClicked = (restaurantId) => {
         console.log(restaurantId);
+        /* ENable below routing after restaurant detail page is developed */
+        /*this.props.history.push('/restaurantdetail/' + restaurantId);*/
   }
   render() {
     // let index=0;
     return (
       <div>
         <Header baseUrl={this.props.baseUrl} onSearchTextChanged={this.onSearchTextChangedHandler} parentPage="home" />
+        <br/>
         <div className="listFlex">
           {this.state.restaurantDetails.map((restaurant, index) => (
             <div className="flexTile" key={restaurant.id} style={{ cursor: 'pointer'}}>

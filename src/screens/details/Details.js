@@ -3,8 +3,19 @@ import Header from '../../common/header/Header';
 import '../details/Details.css';
 import Typography from '@material-ui/core/Typography';
 import '../../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css'
-import { Divider } from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+import { Divider, Card, CardContent, CardHeader } from '@material-ui/core';
+import Badge from '@material-ui/core/Badge';
+import AddIcon from '@material-ui/icons/Add';
+import { withStyles } from '@material-ui/core/styles';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+
+const styles = theme => ({
+    title: {
+        fontWeight: 'bolder',
+        fontSize: '20px'
+    }
+});
+
 class Details extends Component {
     constructor() {
         super();
@@ -48,7 +59,7 @@ class Details extends Component {
         this.state.categories.map((cats, index) => (
             catNames.push(cats.category_name)
         ));
-
+        const { classes } = this.props;
         //location = location.toUpperCase();
         return (
             <div>
@@ -101,18 +112,24 @@ class Details extends Component {
                                 <Divider />
                                 {cats.item_list.map(items => (
                                     <div className="item-row">
-                                        <div className="type-icon">
-                                            {
-                                            items.item_type === 'VEG' ? <i className="fa fa-circle" aria-hidden="true" style={{color:'green', marginRight: '15px'}}></i> : 
-                                            <i className="fa fa-circle" aria-hidden="true" style={{color:'red',marginRight: '15px'}}></i>
-                                            }
-                                            {
-                                                i = items.item_name.split(" "),
-                                                i.map((c) => (
-                                                    <span key={"item-"+items.item_name}>{c.charAt(0).toUpperCase() + c.slice(1) + " "}</span>
-                                                ))
-                                            }
-                                    </div>
+                                        {
+                                            items.item_type === 'VEG' ? <i className="fa fa-circle" aria-hidden="true" style={{ color: 'green', marginRight: '15px' }}></i> :
+                                                <i className="fa fa-circle" aria-hidden="true" style={{ color: 'red', marginRight: '15px' }}></i>
+                                        }
+                                        {
+                                            i = items.item_name.split(" "),
+                                            i.map((c) => (
+                                                <span key={"item-" + items.item_name}>{c.charAt(0).toUpperCase() + c.slice(1) + " "}</span>
+                                            ))
+                                        }
+                                        {
+                                            <span className="item-right">
+                                                <i className="fa fa-inr" aria-hidden="true"></i>
+                                                <span>{" " + items.price}</span>
+                                                <AddIcon style={{marginLeft: '100px'}}></AddIcon>
+                                            </span>
+
+                                        }
                                     </div>
                                 ))}
                                 <br />
@@ -121,6 +138,15 @@ class Details extends Component {
                         ))}
                     </div>
                     <div className="cart">
+                        <Card>
+                            <CardHeader title={"My Cart"} classes={{title: classes.title}}
+                                avatar = {
+                                    <Badge badgeContent={0} color="primary" showZero>
+                                    <ShoppingCartIcon></ShoppingCartIcon>
+                                    </Badge>
+                                }
+                            ></CardHeader>
+                        </Card>
                     </div>
                 </div>
             </div>
@@ -128,4 +154,4 @@ class Details extends Component {
     }
 }
 
-export default Details;
+export default withStyles(styles)(Details);

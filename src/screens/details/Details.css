@@ -31,6 +31,14 @@
     
 }
 
+.item-right {
+    float: right;
+}
+
+.item-left {
+    float:left;
+}
+
 .cart {
     width: 50%;
     height: 100%;

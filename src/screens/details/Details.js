@@ -3,6 +3,8 @@ import Header from '../../common/header/Header';
 import '../details/Details.css';
 import Typography from '@material-ui/core/Typography';
 import '../../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css'
+import { Divider } from '@material-ui/core';
+import { green, red } from '@material-ui/core/colors';
 class Details extends Component {
     constructor() {
         super();
@@ -10,7 +12,7 @@ class Details extends Component {
             restaurantDetails: {},
             addressDetails: {},
             categories: [],
-            categoryNames: []
+            itemNames: []
         }
     }
     componentWillMount() {
@@ -34,12 +36,6 @@ class Details extends Component {
                 that.setState({
                     categories: that.state.restaurantDetails.categories
                 });
-                let catnames = [];
-                that.state.categories.map((cats, index) => (
-                    catnames.push(cats.category_name)
-                ));
-                catnames = catnames.sort();
-                that.setState({ categoryNames: catnames });
             }
         });
         xhr.open("GET", "http://localhost:8080/api/restaurant/2461973c-a238-11e8-9077-720006ceb890");
@@ -47,6 +43,11 @@ class Details extends Component {
     }
     render() {
         let location = this.state.addressDetails.locality;
+        let catNames = [];
+        let i = [];
+        this.state.categories.map((cats, index) => (
+            catNames.push(cats.category_name)
+        ));
 
         //location = location.toUpperCase();
         return (
@@ -54,7 +55,7 @@ class Details extends Component {
                 <Header></Header>
                 <div className="restaurant-info">
                     <img id="rest-img" src={this.state.restaurantDetails.photo_URL} alt={this.state.restaurantDetails.restaurant_name} />
-                    <div class="rest-details">
+                    <div className="rest-details">
                         <Typography variant="h4" style={{ marginLeft: '100px', marginTop: '25px' }}>
                             {this.state.restaurantDetails.restaurant_name}
                         </Typography>
@@ -64,13 +65,13 @@ class Details extends Component {
                         </Typography>
                         <br />
                         <Typography variant="h7" style={{ marginLeft: '100px' }}>
-                            {this.state.categoryNames.join(',')}
+                            <span>{catNames.join(",")}</span>
                         </Typography>
                         <br />
                         <div className="parent-container">
                             <div>
                                 <Typography variant="h7" style={{ marginLeft: '100px', fontWeight: 'bold' }}>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i className="fa fa-star" aria-hidden="true"></i>
                                     {" " + this.state.restaurantDetails.customer_rating}
                                 </Typography>
                                 <Typography style={{ marginLeft: '100px' }} color="textSecondary">
@@ -82,7 +83,7 @@ class Details extends Component {
                                 </Typography>
                             </div>
                             <div>
-                                <i class="fa fa-inr" aria-hidden="true"></i>
+                                <i className="fa fa-inr" aria-hidden="true"></i>
                                 {" " + this.state.restaurantDetails.average_price}
                                 <Typography color="textSecondary">
                                     <span>{"AVERAGE COST FOR"}</span>
@@ -93,7 +94,35 @@ class Details extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="menu-item"></div>
+                <div className="menu-cart-section">
+                    <div className="menu-item">
+                        {this.state.categories.map((cats, index) => (
+                            <span key={"categroy" + index}>{cats.category_name.toUpperCase()}
+                                <Divider />
+                                {cats.item_list.map(items => (
+                                    <div className="item-row">
+                                        <div className="type-icon">
+                                            {
+                                            items.item_type === 'VEG' ? <i className="fa fa-circle" aria-hidden="true" style={{color:'green', marginRight: '15px'}}></i> : 
+                                            <i className="fa fa-circle" aria-hidden="true" style={{color:'red',marginRight: '15px'}}></i>
+                                            }
+                                            {
+                                                i = items.item_name.split(" "),
+                                                i.map((c) => (
+                                                    <span key={"item-"+items.item_name}>{c.charAt(0).toUpperCase() + c.slice(1) + " "}</span>
+                                                ))
+                                            }
+                                    </div>
+                                    </div>
+                                ))}
+                                <br />
+                            </span>
+
+                        ))}
+                    </div>
+                    <div className="cart">
+                    </div>
+                </div>
             </div>
         );
     }

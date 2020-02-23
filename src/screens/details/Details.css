@@ -24,6 +24,31 @@
     justify-content: space-between;
 }
 
+.menu-item {
+    width: 50%;
+    height: 100%;
+    margin: 2%;
+    
+}
+
+.cart {
+    width: 50%;
+    height: 100%;
+    margin: 2%;
+    
+}
+
+.menu-cart-section {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.item-row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 @media only screen and (max-width: 600px) {
     .restaurant-info {
         display: flex;

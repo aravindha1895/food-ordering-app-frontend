@@ -1,30 +1,9 @@
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
 import "./Home.css";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-// import GridListTileBar from '@material-ui/core/GridListTileBar';
-import { withStyles } from "@material-ui/core/styles";
-
-import Avatar from "@material-ui/core/Avatar";
-
-import CardHeader from "@material-ui/core/CardHeader";
-// import CardMedia from '@material-ui/core/CardMedia';
-import Divider from "@material-ui/core/Divider";
+import "font-awesome/css/font-awesome.min.css";
 import Typography from "@material-ui/core/Typography";
-
-import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
-import Button from "@material-ui/core/Button";
-// import { green } from '@material-ui/core/colors';
-import { red } from "@material-ui/core/colors";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 
@@ -38,6 +17,9 @@ class Home extends Component {
     };
   }
   componentWillMount() {
+    this.fetchAllRestaurants();
+  }
+  fetchAllRestaurants() {
     let data = null;
     let xhr = new XMLHttpRequest();
     let context = this;
@@ -51,23 +33,40 @@ class Home extends Component {
     xhr.open("GET", this.props.baseUrl + "/restaurant");
     xhr.send(data);
   }
-  onSearchTextChangedHandler = (e) => {
-      console.log('Function invoked');
-  }
-  onRestaurantClicked = (restaurantId) => {
-        console.log(restaurantId);
-        /* ENable below routing after restaurant detail page is developed */
-        /*this.props.history.push('/restaurantdetail/' + restaurantId);*/
-  }
+  onSearchTextChangedHandler = e => {
+    console.log("Function invoked", e.target.value, e.value);
+    const searchVal = e.target.value;
+    if (searchVal.trim().length === 0) {
+      this.fetchAllRestaurants();
+      return;
+    }
+    let data = null;
+    let xhr = new XMLHttpRequest();
+    let context = this;
+    xhr.addEventListener("readystatechange", function() {
+      if (this.readyState === 4) {
+        const restDetails = JSON.parse(this.responseText).restaurants;
+        context.setState({ restaurantDetails: restDetails });
+        console.log(context.state.restaurantDetails);
+      }
+    });
+    xhr.open("GET", this.props.baseUrl + "/restaurant/name/" + searchVal);
+    xhr.send(data);
+  };
+  onRestaurantClicked = restaurantId => {
+    console.log(restaurantId);
+    /* ENable below routing after restaurant detail page is developed */
+    /*this.props.history.push('/restaurantdetail/' + restaurantId);*/
+  };
   render() {
     // let index=0;
     return (
       <div>
-        <Header baseUrl={this.props.baseUrl} onSearchTextChanged={this.onSearchTextChangedHandler} parentPage="home" />
-        <br/>
+        <Header baseurl={this.props.baseUrl} onsearchtextChanged={this.onSearchTextChangedHandler} parentpage={"Home"} />
+        <br />
         <div className="listFlex">
           {this.state.restaurantDetails.map((restaurant, index) => (
-            <div className="flexTile" key={restaurant.id} style={{ cursor: 'pointer'}}>
+            <div className="flexTile" key={restaurant.id} style={{ cursor: "pointer" }}>
               <Card onClick={() => this.onRestaurantClicked(restaurant.id)}>
                 <CardMedia style={{ width: "400px", height: "200px" }} title={restaurant.restaurant_name} image={restaurant.photo_URL}>
                   <img src={restaurant.photo_URL} alt={restaurant.restaurant_name} className="restaurantImage" />
@@ -77,18 +76,21 @@ class Home extends Component {
                   <br />
                   <div className="restaurantCategories">
                     {restaurant.categories.split().map((category, i) => (
-                      <Typography variant="inline">
-                        <small key={index + "category" + i}>{category},</small>
+                      <Typography variant="body1" key={index + "category" + i}>
+                        <small >{category},</small>
                       </Typography>
                     ))}
                   </div>
                   <br />
                   <div className="restaurantDetail">
                     <div className="restaurantRatingSection">
-                      <i class="fa fa-star-o" aria-hidden="true"></i>
+                      <i className="fa fa-star" aria-hidden="true"></i>
                       &nbsp;&nbsp;{restaurant.customer_rating}&nbsp;&nbsp; ({restaurant.number_customers_rated})
                     </div>
-                    <div style={{ float: "right" }}>{restaurant.average_price} for two</div>
+                    <div style={{ float: "right" }}>
+                      <i className="fa fa-rupee"></i>
+                      {restaurant.average_price} for two
+                    </div>
                   </div>
                 </CardContent>
               </Card>

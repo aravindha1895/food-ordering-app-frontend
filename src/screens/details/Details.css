@@ -25,7 +25,7 @@
 }
 
 .menu-item {
-    width: 50%;
+    width: 60%;
     height: 100%;
     margin: 2%;
     
@@ -40,7 +40,7 @@
 }
 
 .cart {
-    width: 50%;
+    width: 40%;
     height: 100%;
     margin: 2%;
     
@@ -55,6 +55,18 @@
 .item-row {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-amount {
+    font-weight: bolder;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 @media only screen and (max-width: 600px) {

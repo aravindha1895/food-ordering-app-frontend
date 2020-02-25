@@ -3,16 +3,20 @@ import Header from '../../common/header/Header';
 import '../details/Details.css';
 import Typography from '@material-ui/core/Typography';
 import '../../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css'
-import { Divider, Card, CardContent, CardHeader } from '@material-ui/core';
+import { Divider, Card, CardContent, CardHeader, Button } from '@material-ui/core';
 import Badge from '@material-ui/core/Badge';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 const styles = theme => ({
     title: {
         fontWeight: 'bolder',
         fontSize: '20px'
+    },
+    icons: {
+        margin: '100px'
     }
 });
 
@@ -83,6 +87,24 @@ class Details extends Component {
         console.log(this.state.itemObjArr);
         console.log(this.state.countArr);
     }
+
+    clickPlusHandlerFromCart = (itemindex) => {
+        let currCountArr = this.state.countArr;
+        currCountArr[itemindex] = currCountArr[itemindex] + 1;
+        this.setState({ countArr: currCountArr });
+    }
+
+    clickMinusHandlerFromCart = (itemindex) => {
+        let currCountArr = this.state.countArr;
+        let curritemObjArr = this.state.itemObjArr;
+        currCountArr[itemindex] = currCountArr[itemindex] - 1;
+        if (currCountArr[itemindex] === 0) {
+            currCountArr.splice(itemindex, 1);
+            curritemObjArr.splice(itemindex, 1);
+        }
+        this.setState({ countArr: currCountArr });
+    }
+
     render() {
         let location = this.state.addressDetails.locality;
         let catNames = [];
@@ -90,6 +112,18 @@ class Details extends Component {
         this.state.categories.map((cats, index) => (
             catNames.push(cats.category_name)
         ));
+
+        let totalcount = 0;
+        this.state.countArr.map(currcount => (
+            totalcount = totalcount + currcount
+        ));
+
+        let totalCartValue = 0;
+        this.state.itemObjArr.map((curritem, index) => (
+            totalCartValue = totalCartValue + (curritem.price * this.state.countArr[index])
+        ));
+        console.log(totalCartValue);
+
         const { classes } = this.props;
         //location = location.toUpperCase();
         return (
@@ -156,7 +190,7 @@ class Details extends Component {
                                         {
                                             <span className="item-right">
                                                 <i className="fa fa-inr" aria-hidden="true"></i>
-                                                <span>{" " + items.price}</span>
+                                                <span>{" " + items.price.toFixed(2)}</span>
                                                 <AddIcon style={{ marginLeft: '100px', cursor: 'pointer' }} onClick={() => this.clickPlusHandler(catindex, itemindex)}></AddIcon>
                                             </span>
                                         }
@@ -171,25 +205,44 @@ class Details extends Component {
                         <Card>
                             <CardHeader title={"My Cart"} classes={{ title: classes.title }}
                                 avatar={
-                                    <Badge badgeContent={0} color="primary" showZero>
+                                    <Badge badgeContent={totalcount} color="primary" showZero>
                                         <ShoppingCartIcon></ShoppingCartIcon>
                                     </Badge>
                                 }
                             ></CardHeader>
                             {this.state.itemObjArr.map((itemobj, itemobjindex) => (
-                                <CardContent key={"cartcontent-"+itemobjindex}>
-                                    {
-                                    itemobj.item_type === 'VEG' ? <i className="fa fa-stop-circle-o" aria-hidden="true" style={{color: 'green'}}></i> : 
-                                    <i className="fa fa-stop-circle-o" aria-hidden="true" style={{color: 'red'}}></i>
-                                    }
-                                    {
-                                        i = itemobj.item_name.split(" "),
-                                        i.map((c, wordindex) => (
-                                            <span key={"cartitem-"+wordindex}>{c.charAt(0).toUpperCase() + c.slice(1) + " "}</span>
-                                        ))
-                                    }
+                                <CardContent key={"cartcontent-" + itemobjindex} className="card-content">
+                                    <span style={{ width: '35%' }}>
+                                        {
+                                            itemobj.item_type === 'VEG' ? <i className="fa fa-stop-circle-o" aria-hidden="true" style={{ color: 'green', marginRight: '15px' }}></i> :
+                                                <i className="fa fa-stop-circle-o" aria-hidden="true" style={{ color: 'red', marginRight: '15px' }}></i>
+                                        }
+                                        {
+                                            i = itemobj.item_name.split(" "),
+                                            i.map((c, wordindex) => (
+                                                <span key={"cartitem-" + wordindex} style={{ color: 'grey' }}>{c.charAt(0).toUpperCase() + c.slice(1) + " "}</span>
+                                            ))
+                                        }
+                                    </span>
+                                    <span>
+                                        <RemoveIcon fontSize='small' style={{ cursor: 'pointer' }} onClick={() => this.clickMinusHandlerFromCart(itemobjindex)} />
+                                        <span style={{ fontSize: 'larger' }}>{this.state.countArr[itemobjindex]}</span>
+                                        <AddIcon fontSize='small' style={{ cursor: 'pointer' }} onClick={() => this.clickPlusHandlerFromCart(itemobjindex)}></AddIcon>
+                                    </span>
+                                    <span style={{ color: 'grey' }}><i className="fa fa-inr" aria-hidden="true"></i>{" " + (this.state.countArr[itemobjindex] * itemobj.price)}</span>
                                 </CardContent>
                             ))}
+                            <CardContent>
+                                <div className="total-amount">
+                                    <span>TOTAL AMOUNT</span>
+                                    <span>{totalCartValue.toFixed(2)}</span>
+                                </div>
+                            </CardContent>
+                            <CardContent>
+                                <Button variant="contained" color="primary" fullWidth='true' size='medium'>
+                                    CHECKOUT
+                                </Button>
+                            </CardContent>
                         </Card>
                     </div>
                 </div>

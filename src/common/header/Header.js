@@ -164,7 +164,7 @@ class Header extends Component {
         });
       }
     });
-    xhrLogin.open("POST", "http://localhost:8080/api" + "/customer/login");
+    xhrLogin.open("POST", this.props.baseurl + "/customer/login");
     xhrLogin.setRequestHeader("authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword));
     // xhrLogin.setRequestHeader("Content-Type", "application/json");
     // xhrLogin.setRequestHeader("Cache-Control", "no-cache");
@@ -196,7 +196,7 @@ class Header extends Component {
         console.log(this);
       }
     });
-    xhrLogin.open("POST", "http://localhost:8080/api" + "/customer/logout");
+    xhrLogin.open("POST", this.props.baseurl + "/customer/logout");
     xhrLogin.setRequestHeader("authorization", "Bearer " + sessionStorage.getItem("access-token"));
     // xhrLogin.setRequestHeader("Content-Type", "application/json");
     // xhrLogin.setRequestHeader("Cache-Control", "no-cache");
@@ -263,7 +263,7 @@ class Header extends Component {
       }
     });
 
-    xhrSignup.open("POST", "http://localhost:8080/api" + "/customer/signup");
+    xhrSignup.open("POST", this.props.baseurl + "/customer/signup");
     xhrSignup.setRequestHeader("Content-Type", "application/json");
     //xhrSignup.setRequestHeader("Cache-Control", "no-cache");
     xhrSignup.send(JSON.stringify(dataSignup));
@@ -313,6 +313,7 @@ class Header extends Component {
             <path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-8-15.03-8-15.03 0h15.03zM1.02 17h15v2h-15z" />
             <path d="M0 0h24v24H0z" fill="none" />
           </SvgIcon>
+          {this.props.parentpage==="Home" &&
           <span className="header-search-box">
             <FilledInput
               id="outlined-basic"
@@ -326,8 +327,10 @@ class Header extends Component {
                   </SvgIcon>
                 </InputAdornment>
               }
+              onChange={ this.props.onsearchtextChanged}
             />
           </span>
+          }   
           {!this.state.loggedIn && (
             <Button variant="contained" color="default" className="header-button" onClick={this.openModalHandler}>
               <AccountCircleIcon />

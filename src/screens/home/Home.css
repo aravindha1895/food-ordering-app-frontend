@@ -12,7 +12,11 @@
 }
 .flexTile{
     width: 300px;
-    height: 400px;
+    min-height: 400px !important;
+    height: 400px !important;
+}
+[class*="MuiCard-root"]{
+    height: 380px !important;
 }
 .restaurantRatingSection{
     float:left;

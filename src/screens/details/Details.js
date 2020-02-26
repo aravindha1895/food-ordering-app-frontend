@@ -9,6 +9,9 @@ import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import RemoveIcon from '@material-ui/icons/Remove';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const styles = theme => ({
     title: {
@@ -28,7 +31,9 @@ class Details extends Component {
             addressDetails: {},
             categories: [],
             itemObjArr: [],
-            countArr: []
+            countArr: [],
+            open: false,
+            message: '',
         }
     }
     componentWillMount() {
@@ -84,6 +89,8 @@ class Details extends Component {
             counts.push(1);
             this.setState({ countArr: counts });
         }
+        this.setState({ open: true });
+        this.setState({ message: 'Item added to cart!' });
         console.log(this.state.itemObjArr);
         console.log(this.state.countArr);
     }
@@ -92,6 +99,8 @@ class Details extends Component {
         let currCountArr = this.state.countArr;
         currCountArr[itemindex] = currCountArr[itemindex] + 1;
         this.setState({ countArr: currCountArr });
+        this.setState({ open: true });
+        this.setState({ message: 'Item quantity increased by 1!' });
     }
 
     clickMinusHandlerFromCart = (itemindex) => {
@@ -103,6 +112,21 @@ class Details extends Component {
             curritemObjArr.splice(itemindex, 1);
         }
         this.setState({ countArr: currCountArr });
+        this.setState({ open: true });
+        this.setState({ message: 'Item quantity decreased by 1!' });
+    }
+
+    handleClose = () => this.setState({ open: false })
+
+    clickCheckOutHandler = () => {
+        let totalcount = 0;
+        this.state.countArr.map(currcount => (
+            totalcount = totalcount + currcount
+        ));
+        if (totalcount === 0) {
+            this.setState({ open: true });
+            this.setState({ message: 'Please add an item to your cart!' });
+        }
     }
 
     render() {
@@ -225,9 +249,9 @@ class Details extends Component {
                                         }
                                     </span>
                                     <span>
-                                        <RemoveIcon fontSize='small' style={{ cursor: 'pointer' }} onClick={() => this.clickMinusHandlerFromCart(itemobjindex)} />
+                                        <RemoveIcon fontSize='small' className="remove-icon" onClick={() => this.clickMinusHandlerFromCart(itemobjindex)} />
                                         <span style={{ fontSize: 'larger' }}>{this.state.countArr[itemobjindex]}</span>
-                                        <AddIcon fontSize='small' style={{ cursor: 'pointer' }} onClick={() => this.clickPlusHandlerFromCart(itemobjindex)}></AddIcon>
+                                        <AddIcon fontSize='small' className="add-icon-cart" onClick={() => this.clickPlusHandlerFromCart(itemobjindex)}></AddIcon>
                                     </span>
                                     <span style={{ color: 'grey' }}><i className="fa fa-inr" aria-hidden="true"></i>{" " + (this.state.countArr[itemobjindex] * itemobj.price)}</span>
                                 </CardContent>
@@ -239,11 +263,25 @@ class Details extends Component {
                                 </div>
                             </CardContent>
                             <CardContent>
-                                <Button variant="contained" color="primary" fullWidth='true' size='medium'>
+                                <Button variant="contained" color="primary" fullWidth='true' size='medium' onClick={this.clickCheckOutHandler}>
                                     CHECKOUT
                                 </Button>
                             </CardContent>
                         </Card>
+                        <Snackbar
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            open={this.state.open}
+                            autoHideDuration={6000}
+                            onClose={this.handleClose}
+                            message={this.state.message}
+                            action={
+                                <IconButton size="small" ariaLabel="close" color="inherit" onClick={this.handleClose}>
+                                    <CloseIcon fontSize="small" />
+                                </IconButton>
+                            }></Snackbar>
                     </div>
                 </div>
             </div>

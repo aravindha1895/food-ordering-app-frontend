@@ -1,0 +1,27 @@
+.restaurantImage {
+    object-fit: fill;
+    width: 100%;
+    height: 100%
+}
+.listFlex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+.flexTile{
+    width: 300px;
+    min-height: 400px !important;
+    height: 400px !important;
+}
+[class*="MuiCard-root"]{
+    height: 380px !important;
+}
+.restaurantRatingSection{
+    float:left;
+    background-color: rgb(148, 199, 7);
+    color: white;
+    padding: 5px;
+    margin-bottom: 10px;
+}

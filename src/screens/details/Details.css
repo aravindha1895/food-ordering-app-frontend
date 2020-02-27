@@ -25,10 +25,9 @@
 }
 
 .menu-item {
-    width: 60%;
+    width: 50%;
     height: 100%;
     margin: 2%;
-    
 }
 
 .item-right {
@@ -40,7 +39,7 @@
 }
 
 .cart {
-    width: 40%;
+    width: 50%;
     height: 100%;
     margin: 2%;
     
@@ -49,7 +48,7 @@
 .menu-cart-section {
     display: flex;
     flex-direction: row;
-
+    flex-wrap: nowrap;
 }
 
 .item-row {
@@ -79,10 +78,63 @@
     background-color: yellow;
 }
 
+[class*="MuiSvgIcon-root"] {
+    margin-bottom: -5px;
+    margin-top: -5px;
+}
 
 @media only screen and (max-width: 600px) {
-    .restaurant-info {
+    .menu-cart-section {
         display: flex;
-        justify-content: space-around;
+        flex-direction: column;
     }
+
+    .item-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .menu-item {
+        width: 100%;
+        height: 100%;
+        margin: 2%;
+    }
+    
+    .cart {
+        width: 100%;
+        height: 100%;
+        margin: 2%;
+    }
+
+    .restaurant-info {
+        background-color: lightgray;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .rest-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        justify-content: space-between;
+    }
+
+    #rest-img {
+        height: 200px;
+        width: 350px;
+        margin: 25px;
+    }
+
+    .parent-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-self: normal;
+    }
+    
 }

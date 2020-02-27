@@ -40,6 +40,8 @@ class Details extends Component {
         let data = null;
         let xhr = new XMLHttpRequest();
         let that = this;
+        const { restaurantId } = this.props.match.params
+        console.log(restaurantId);
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 that.setState({
@@ -58,7 +60,7 @@ class Details extends Component {
                 });
             }
         });
-        xhr.open("GET", "http://localhost:8080/api/restaurant/2461973c-a238-11e8-9077-720006ceb890");
+        xhr.open("GET", this.props.baseUrl + "/restaurant/" + restaurantId);
         xhr.send(data);
     }
 
@@ -123,7 +125,10 @@ class Details extends Component {
         this.state.countArr.map(currcount => (
             totalcount = totalcount + currcount
         ));
-        if (totalcount === 0) {
+        if (sessionStorage.getItem('access-token') == null) {
+            this.setState({ open: true });
+            this.setState({ message: 'Please login first' });
+        } else if (sessionStorage.getItem('access-token') == null && totalcount === 0) {
             this.setState({ open: true });
             this.setState({ message: 'Please add an item to your cart!' });
         }
@@ -156,28 +161,26 @@ class Details extends Component {
                 <div className="restaurant-info">
                     <img id="rest-img" src={this.state.restaurantDetails.photo_URL} alt={this.state.restaurantDetails.restaurant_name} />
                     <div className="rest-details">
-                        <Typography variant="h4" style={{ marginLeft: '100px', marginTop: '25px' }}>
+                        <Typography variant="h4" style={{ marginTop: '25px' }}>
                             {this.state.restaurantDetails.restaurant_name}
                         </Typography>
                         <br />
-                        <Typography variant="h7" style={{ marginLeft: '100px' }}>
+                        <Typography variant="h7">
                             {location}
                         </Typography>
                         <br />
-                        <Typography variant="h7" style={{ marginLeft: '100px' }}>
+                        <Typography variant="h7">
                             <span>{catNames.join(",")}</span>
                         </Typography>
                         <br />
                         <div className="parent-container">
                             <div>
-                                <Typography variant="h7" style={{ marginLeft: '100px', fontWeight: 'bold' }}>
+                                <Typography variant="h7" style={{ fontWeight: 'bold' }}>
                                     <i className="fa fa-star" aria-hidden="true"></i>
                                     {" " + this.state.restaurantDetails.customer_rating}
                                 </Typography>
-                                <Typography style={{ marginLeft: '100px' }} color="textSecondary">
-                                    {"AVERAGE RATING BY"}
-                                </Typography>
-                                <Typography style={{ marginLeft: '100px' }} color="textSecondary">
+                                <Typography color="textSecondary">
+                                    {"AVERAGE RATING BY"}<br/>
                                     <span style={{ fontWeight: 'bold' }}>{this.state.restaurantDetails.number_customers_rated}</span>
                                     {" CUSTOMERS"}
                                 </Typography>
@@ -205,12 +208,14 @@ class Details extends Component {
                                             items.item_type === 'VEG' ? <i key={"vegicon-" + items.item_name + "-" + catindex + "-" + itemindex} className="fa fa-circle" aria-hidden="true" style={{ color: 'green', marginRight: '15px' }}></i> :
                                                 <i key={"nonvegicon-" + items.item_name + "-" + catindex + "-" + itemindex} className="fa fa-circle" aria-hidden="true" style={{ color: 'red', marginRight: '15px' }}></i>
                                         }
+                                        <span>
                                         {
                                             i = items.item_name.split(" "),
                                             i.map((c, wordindex) => (
                                                 <span key={"item-" + items.item_name + "-" + catindex + "-" + itemindex + "-" + wordindex}>{c.charAt(0).toUpperCase() + c.slice(1) + " "}</span>
                                             ))
                                         }
+                                        </span>
                                         {
                                             <span className="item-right">
                                                 <i className="fa fa-inr" aria-hidden="true"></i>
@@ -250,7 +255,7 @@ class Details extends Component {
                                     </span>
                                     <span>
                                         <RemoveIcon fontSize='small' className="remove-icon" onClick={() => this.clickMinusHandlerFromCart(itemobjindex)} />
-                                        <span style={{ fontSize: 'larger' }}>{this.state.countArr[itemobjindex]}</span>
+                                        <span style={{ fontSize: 'larger' }}>{"  " + this.state.countArr[itemobjindex] + "  "}</span>
                                         <AddIcon fontSize='small' className="add-icon-cart" onClick={() => this.clickPlusHandlerFromCart(itemobjindex)}></AddIcon>
                                     </span>
                                     <span style={{ color: 'grey' }}><i className="fa fa-inr" aria-hidden="true"></i>{" " + (this.state.countArr[itemobjindex] * itemobj.price)}</span>
@@ -274,7 +279,7 @@ class Details extends Component {
                                 horizontal: 'left',
                             }}
                             open={this.state.open}
-                            autoHideDuration={6000}
+                            autoHideDuration={60000}
                             onClose={this.handleClose}
                             message={this.state.message}
                             action={

@@ -83,6 +83,10 @@
     margin-top: -5px;
 }
 
+[class*="MuiBadge-badge"] {
+    z-index: 0!important;
+}
+
 @media only screen and (max-width: 600px) {
     .menu-cart-section {
         display: flex;

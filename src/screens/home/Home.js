@@ -65,7 +65,7 @@ class Home extends Component {
         <Header baseurl={this.props.baseUrl} onsearchtextChanged={this.onSearchTextChangedHandler} parentpage={"Home"} />
         <br />
         <div className="listFlex">
-          {this.state.restaurantDetails.map((restaurant, index) => (
+          {this.state.restaurantDetails && this.state.restaurantDetails.map((restaurant, index) => (
             <div className="flexTile" key={restaurant.id} style={{ cursor: "pointer" }}>
               <Card onClick={() => this.onRestaurantClicked(restaurant.id)}>
                 <CardMedia style={{ width: "400px", height: "200px" }} title={restaurant.restaurant_name} image={restaurant.photo_URL}>

@@ -23,6 +23,7 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import request from 'request';
 
 const customStyles = {
   content: {
@@ -69,6 +70,7 @@ class Header extends Component {
       contactRequired: "dispNone",
       contact: ""
     };
+    this.loginClickHandler = this.loginClickHandler.bind(this);
   }
   openModalHandler = () => {
     this.setState({
@@ -127,15 +129,49 @@ class Header extends Component {
     if (this.state.username === "" || this.state.loginPassword === "" || this.validateContactNumber(this.state.username) === false) {
       return;
     }
+  //   fetch(`${this.props.baseurl}/customer/login`, {
+  //     method: 'POST',
+  //     headers: {
+  //       "authorization": "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword),
+  //       'Content-Type': 'application/json',
+  //     }
+  //   })
+  //   .then(res => {
+  //     sessionStorage.setItem("access-token", res.headers['access-token'])
+  //     return res.json()})
+  //   .then(res => {
+  //     if (res.email_address) {
+  //       this.setState({
+  //         loggedIn: true,
+  //         isLoginSuccess: true,
+  //         loginErrMsg: "",
+  //         loginResponse: res,
+  //         isDisplayLoginSnackBox: true,
+  //         isDisplayLoginSnackBox: true
+  //       })
+  //       setTimeout(() => {
+  //         this.setState({ isDisplayLoginSnackBox: false });
+  //       }, 3000);
+  //       this.closeModalHandler();
+  //     } else if (res.status === 401) {
+  //       this.setState({
+  //         isLoginSuccess: false,
+  //         loginErrMsg: res.message
+  //       });
+  //     }
+    
+  // })
 
     const dataLogin = null;
     let xhrLogin = new XMLHttpRequest();
     const context1 = this;
-    xhrLogin.addEventListener("readystatechange", function() {
+    const accessToken = window.btoa(this.state.username + ":" + this.state.loginPassword);
+    xhrLogin.addEventListener("readystatechange", function () {
       if (this.readyState === 4 && this.status === 200) {
         console.log(this);
         console.log(this.responseText);
         sessionStorage.setItem("uuid", JSON.parse(this.responseText).id);
+        debugger;
         sessionStorage.setItem("access-token", xhrLogin.getResponseHeader("access-token"));
 
         context1.setState({
@@ -164,6 +200,7 @@ class Header extends Component {
         });
       }
     });
+    debugger;
     xhrLogin.open("POST", this.props.baseurl + "/customer/login");
     xhrLogin.setRequestHeader("authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword));
     // xhrLogin.setRequestHeader("Content-Type", "application/json");

@@ -1,0 +1,24 @@
+.summary-main {
+    width: 25%;
+    margin-top: 40px;
+}
+
+.card-content-checkout {
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-item {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.item-2 {
+    width: 50%;
+}
+
+.resturant-name {
+    font-size: 18px;
+}

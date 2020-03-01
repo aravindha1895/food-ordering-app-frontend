@@ -32,10 +32,10 @@ export default class PaymentMode extends React.Component {
 	}
 
 	handleChange(event) {
-		debugger;
 		this.setState({
 			selectedPaymentMode: event.target.value
 		})
+		this.props.setPaymentMethod(event.target.value)
 		this.props.handleSteps(true)
 	}
 
@@ -48,7 +48,7 @@ export default class PaymentMode extends React.Component {
 					<RadioGroup aria-label="paymentMode" name="paymentMode" onChange={this.handleChange}>
 						{paymentMethods.length > 0 && paymentMethods.map((paymentMethod, index) => {
 							return (
-								<FormControlLabel key={index} value={paymentMethod.payment_name} control={<Radio />} label={paymentMethod.payment_name} />
+								<FormControlLabel key={index} value={paymentMethod.id} control={<Radio />} label={paymentMethod.payment_name} />
 							)
 						})}
 					</RadioGroup>

@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
   rootMain: {
     width: '70%',
     display: 'flex',
-		flexDirection: 'column'
+    flexDirection: 'column',
+    marginRight: "40px",
   },
   button: {
     marginTop: theme.spacing(1),
@@ -41,12 +42,12 @@ function getSteps() {
   return ['Delievery', 'Payment'];
 }
 
-function getStepContent(step, baseUrl, handleSteps) {
+function getStepContent(step, baseUrl, handleSteps, setPaymentMethod, setDeliveryAddress) {
   switch (step) {
     case 0:
-      return <Delievery handleSteps={handleSteps} baseUrl={baseUrl}/>;
+      return <Delievery handleSteps={handleSteps} setDeliveryAddress={setDeliveryAddress} baseUrl={baseUrl}/>;
     case 1:
-      return <PaymentMode handleSteps={handleSteps} baseUrl={baseUrl}/>;
+      return <PaymentMode handleSteps={handleSteps} setPaymentMethod={setPaymentMethod} baseUrl={baseUrl}/>;
     default:
       return 'Unknown step';
   }
@@ -56,6 +57,8 @@ export default function Main(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [moveNext, shouldMoveNext] = React.useState(false);
+  const [paymentId, setPaymentId] = React.useState(0);
+  const [addressId, setDeliveryAddressId] = React.useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
@@ -63,6 +66,14 @@ export default function Main(props) {
       setActiveStep(prevActiveStep => prevActiveStep + 1);
     }
   };
+
+  const setPaymentMethod = (id) => {
+    setPaymentId(id);
+  }
+
+  const setDeliveryAddress = (id) => {
+    setDeliveryAddressId(id);
+  }
 
   const handleSteps = (val) => {
     shouldMoveNext(val)
@@ -84,7 +95,7 @@ export default function Main(props) {
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
             <StepContent>
-              <Typography>{getStepContent(index, props.baseUrl, handleSteps)}</Typography>
+              <Typography>{getStepContent(index, props.baseUrl, handleSteps, setPaymentMethod, setDeliveryAddress)}</Typography>
               <div className={classes.actionsContainer}>
                 <div>
                   <Button
@@ -116,9 +127,8 @@ export default function Main(props) {
           </Button>
         </Paper>
       )}
-      </div>			<Summary />
-
-
+      </div>			
+      <Summary props={props} baseUrl={props.baseUrl} paymentId={paymentId} addressId={addressId}/>
     </div>
   );
 }

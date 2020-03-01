@@ -41,6 +41,7 @@ export class Address extends Component {
 		this.setState({
 			defaultAddressId: addressId
 		})
+		this.props.setDeliveryAddress(addressId)
 		this.props.handleSteps(true);
 	}
 

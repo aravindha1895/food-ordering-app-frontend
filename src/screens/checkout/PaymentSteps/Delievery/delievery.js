@@ -63,7 +63,7 @@ export default function Delievery(props) {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <Address handleSteps={props.handleSteps} baseUrl={props.baseUrl}/>
+        <Address handleSteps={props.handleSteps} setDeliveryAddress={props.setDeliveryAddress} baseUrl={props.baseUrl}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <NewAddress baseUrl={props.baseUrl}/>

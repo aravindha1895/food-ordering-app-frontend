@@ -11,12 +11,11 @@
     align-items: flex-start;
 }
 .flexTile{
-    width: 300px;
     min-height: 400px !important;
-    height: 400px !important;
+    height: 100% !important;
 }
 [class*="MuiCard-root"]{
-    height: 380px !important;
+    height: 100% !important;
 }
 .restaurantRatingSection{
     float:left;

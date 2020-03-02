@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
-import "./Home.css";
-import "font-awesome/css/font-awesome.min.css";
+import "../home/Home.css";
+// import "../../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css"
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -56,7 +56,7 @@ class Home extends Component {
   onRestaurantClicked = restaurantId => {
     console.log(restaurantId);
     /* ENable below routing after restaurant detail page is developed */
-    /*this.props.history.push('/restaurantdetail/' + restaurantId);*/
+    this.props.history.push('/restaurant/' + restaurantId);
   };
   render() {
     // let index=0;
@@ -65,7 +65,7 @@ class Home extends Component {
         <Header baseurl={this.props.baseUrl} onsearchtextChanged={this.onSearchTextChangedHandler} parentpage={"Home"} />
         <br />
         <div className="listFlex">
-          {this.state.restaurantDetails.map((restaurant, index) => (
+          {this.state.restaurantDetails && this.state.restaurantDetails.map((restaurant, index) => (
             <div className="flexTile" key={restaurant.id} style={{ cursor: "pointer" }}>
               <Card onClick={() => this.onRestaurantClicked(restaurant.id)}>
                 <CardMedia style={{ width: "400px", height: "200px" }} title={restaurant.restaurant_name} image={restaurant.photo_URL}>

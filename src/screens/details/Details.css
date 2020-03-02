@@ -1,0 +1,140 @@
+.restaurant-info {
+    background-color: lightgray;
+    height: 250px;
+    display: flex;
+    flex-direction: row;
+}
+
+#rest-img {
+    height: 200px;
+    width: 250px;
+    margin: 25px;
+}
+
+.rest-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.parent-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.menu-item {
+    width: 50%;
+    height: 100%;
+    margin: 2%;
+}
+
+.item-right {
+    float: right;
+}
+
+.item-left {
+    float:left;
+}
+
+.cart {
+    width: 50%;
+    height: 100%;
+    margin: 2%;
+    
+}
+
+.menu-cart-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.item-row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-amount {
+    font-weight: bolder;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.remove-icon:hover {
+    cursor: pointer;
+    background-color: yellow;
+}
+
+.add-icon-cart:hover {
+    cursor: pointer;
+    background-color: yellow;
+}
+
+[class*="MuiSvgIcon-root"] {
+    margin-bottom: -5px;
+    margin-top: -5px;
+}
+
+@media only screen and (max-width: 600px) {
+    .menu-cart-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .menu-item {
+        width: 100%;
+        height: 100%;
+        margin: 2%;
+    }
+    
+    .cart {
+        width: 100%;
+        height: 100%;
+        margin: 2%;
+    }
+
+    .restaurant-info {
+        background-color: lightgray;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .rest-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        justify-content: space-between;
+    }
+
+    #rest-img {
+        height: 200px;
+        width: 350px;
+        margin: 25px;
+    }
+
+    .parent-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-self: normal;
+    }
+    
+}

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
 import "../home/Home.css";
-// import "../../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css"
+import "font-awesome/css/font-awesome.min.css";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";

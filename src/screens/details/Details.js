@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from '../../common/header/Header';
 import '../details/Details.css';
 import Typography from '@material-ui/core/Typography';
-// impor\t '../../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css'
+import "font-awesome/css/font-awesome.min.css";
 import { Divider, Card, CardContent, CardHeader, Button } from '@material-ui/core';
 import Badge from '@material-ui/core/Badge';
 import AddIcon from '@material-ui/icons/Add';
@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
 const styles = theme => ({
-    title: {
+    title: { 
         fontWeight: 'bolder',
         fontSize: '20px'
     },

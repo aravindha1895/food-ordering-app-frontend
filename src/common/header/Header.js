@@ -129,39 +129,7 @@ class Header extends Component {
     if (this.state.username === "" || this.state.loginPassword === "" || this.validateContactNumber(this.state.username) === false) {
       return;
     }
-  //   fetch(`${this.props.baseurl}/customer/login`, {
-  //     method: 'POST',
-  //     headers: {
-  //       "authorization": "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword),
-  //       'Content-Type': 'application/json',
-  //     }
-  //   })
-  //   .then(res => {
-  //     sessionStorage.setItem("access-token", res.headers['access-token'])
-  //     return res.json()})
-  //   .then(res => {
-  //     if (res.email_address) {
-  //       this.setState({
-  //         loggedIn: true,
-  //         isLoginSuccess: true,
-  //         loginErrMsg: "",
-  //         loginResponse: res,
-  //         isDisplayLoginSnackBox: true,
-  //         isDisplayLoginSnackBox: true
-  //       })
-  //       setTimeout(() => {
-  //         this.setState({ isDisplayLoginSnackBox: false });
-  //       }, 3000);
-  //       this.closeModalHandler();
-  //     } else if (res.status === 401) {
-  //       this.setState({
-  //         isLoginSuccess: false,
-  //         loginErrMsg: res.message
-  //       });
-  //     }
-    
-  // })
-
+ 
     const dataLogin = null;
     let xhrLogin = new XMLHttpRequest();
     const context1 = this;

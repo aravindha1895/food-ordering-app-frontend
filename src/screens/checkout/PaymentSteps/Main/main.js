@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Delievery from '../Delievery/delievery';
 import PaymentMode from '../PaymentMode/payment-mode';
 import Summary from '../../Summary/summary';
+import './main.css'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -85,11 +86,13 @@ export default function Main(props) {
 
   const handleReset = () => {
     setActiveStep(0);
+    setPaymentId(0);
+    setDeliveryAddressId(0);
   };
 
   return (
-    <div className={classes.root}>
-      <div className={classes.rootMain}>
+    <div className={`${classes.root} main-container`}>
+      <div className={`${classes.rootMain} root-container`}>
       <Stepper activeStep={activeStep} orientation="vertical" className={classes.paymentSteps}>
         {steps.map((label, index) => (
           <Step key={label}>

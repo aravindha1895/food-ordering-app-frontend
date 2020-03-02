@@ -8,22 +8,28 @@
 }
 
 .gridList {
-	flex-wrap: 'nowrap';
-	transform: 'translateZ(0)';
-	height: 250px;
+	display: flex;
+    padding: 0;
+    flex-direction: column;
+    flex-wrap: wrap;
+    list-style: none;
+	overflow-x: auto;
+	overflow-y: hidden;
+	height: 350px;
 }
 
 .grid-main {
 	position: relative;
 	padding: 20px !important;
-	height: 250px !important;
-	width: 250px !important;
+	height: 320px !important;
+	width: 33% !important;
 	cursor: pointer;
 }
 
 .default {
-	border: 1px solid red;
-	box-shadow: 5px 10px red;
+	border: 1px solid #E76084;
+	box-shadow: 5px 10px 10px #E76084;
+	border-radius: 4px;;
 }
 
 .icon {
@@ -39,4 +45,11 @@
 .titleBar {
 	background:
 		'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)';
+}
+
+
+@media screen and (max-width: 992px) {
+	.grid-main {
+		width: 65% !important;
+	}
 }

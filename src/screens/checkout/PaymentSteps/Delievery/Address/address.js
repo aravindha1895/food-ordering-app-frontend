@@ -6,7 +6,6 @@ import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { green, grey } from '@material-ui/core/colors';
-
 import './address.css';
 import Typography from '@material-ui/core/Typography';
 
@@ -49,19 +48,19 @@ export class Address extends Component {
 		const { addresses } = this.state;
  		return (
 			<div className={`root`}>
-      <GridList className={`gridList`} cols={2.5}>
+      <GridList className={`gridList`}>
         {addresses && addresses.length > 0 && addresses.map(address => {
 					const defaultAddress = address.id === this.state.defaultAddressId;
 					return (
 					<GridListTile key={address.id} className={defaultAddress ? "grid-main default" : "grid-main"}
 					 onClick={this.handleDefaultAddress.bind(this, address.id)}>
-						<div className="address-main">
-							<Typography style={{marginBottom: '5px'}}>{address.flat_building_name}</Typography>
-							<Typography style={{marginBottom: '5px'}}>{address.locality}</Typography>
-							<Typography style={{marginBottom: '5px'}}>{address.city}</Typography>
-							<Typography style={{marginBottom: '5px'}}>{address.state.state_name}</Typography>
-							<Typography style={{marginBottom: '5px'}}>{address.pincode}</Typography>
-						</div>
+						<span className="address-main">
+							<Typography component="p" style={{marginBottom: '5px'}}>{address.flat_building_name}</Typography>
+							<Typography component="p" style={{marginBottom: '5px'}}>{address.locality}</Typography>
+							<Typography component="p" style={{marginBottom: '5px'}}>{address.city}</Typography>
+							<Typography component="p" style={{marginBottom: '5px'}}>{address.state.state_name}</Typography>
+							<Typography component="p" style={{marginBottom: '5px'}}>{address.pincode}</Typography>
+						</span>
 						<IconButton className="icon">						
 							<CheckCircleIcon style={defaultAddress ? { color: green[500] } : {color: grey[500]}}/>
 						</IconButton>

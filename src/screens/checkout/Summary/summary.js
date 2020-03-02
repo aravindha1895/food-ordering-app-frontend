@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Divider, Card, CardContent, CardHeader, Button, Typography, IconButton } from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 import './summary.css'
 
 export class Summary extends Component {
@@ -26,6 +28,8 @@ export class Summary extends Component {
 		})
 	}
 
+	handleClose = () => this.setState({ open: false })
+
 	clickCheckOutHandler() {
 		const { paymentId, addressId } = this.props;
 		const { totalCartValue, cartItems, quantity, resturantId } = this.state;
@@ -36,8 +40,6 @@ export class Summary extends Component {
 				quantity: quantity[index]
 			}
 		})
-
-		console.log(cartItems)
 		const payload = {
 			address_id: addressId,
 			payment_id: paymentId,
@@ -47,6 +49,23 @@ export class Summary extends Component {
 			item_quantities: itemQuantities,
 			restaurant_id: resturantId
 		}
+		if (!addressId) {
+			this.setState({
+				open: true,
+				message: 'Please select a address to continue.'
+			})
+			return;
+		}
+
+		if (!paymentId) {
+			this.setState({
+				open: true,
+				message: 'Please select a payment mode and then place order.'
+			})
+			return;	
+		}
+
+
 		fetch(`${this.props.baseUrl}/order`, {
 			method: 'POST',
 			body: JSON.stringify(payload),
@@ -66,11 +85,12 @@ export class Summary extends Component {
 	render() {
 		const {cartItems, quantity, totalCartValue, resturantName} = this.state;
 		return (
+			<>
 			<Card className="summary-main">
 					<CardHeader title={"Summary"}
 					></CardHeader>
 					<CardContent className="card-content-checkout">
-						<Typography variant="p" className="resturant-name">{resturantName}</Typography>
+						<Typography component="p" className="resturant-name">{resturantName}</Typography>
 						{cartItems.map((itemObj, itemobjindex) => (
 							<div className="cart-item" key={"cartcontent-" + itemobjindex}>
 								<div className="item item-2">
@@ -96,6 +116,21 @@ export class Summary extends Component {
 							</Button>
 					</CardContent>
 			</Card>
+			<Snackbar
+				anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'left',
+				}}
+				open={this.state.open}
+				autoHideDuration={60000}
+				onClose={this.handleClose}
+				message={this.state.message}
+				action={
+						<IconButton size="small" ariaLabel="close" color="inherit" onClick={this.handleClose}>
+								<CloseIcon fontSize="small" />
+						</IconButton>
+				}></Snackbar>
+			</>
 		)
 	}
 }

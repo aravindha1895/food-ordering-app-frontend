@@ -1,13 +1,7 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import { Button } from '@material-ui/core';
-import MenuItem from '@material-ui/core/MenuItem';
+import CloseIcon from '@material-ui/icons/Close';
+import { MenuItem, IconButton, Snackbar, Select, Button, 
+	InputLabel, Input, FormHelperText, FormControl } from '@material-ui/core';
 import './new-address.css';
 
 export default class NewAddress extends React.Component {
@@ -68,10 +62,22 @@ export default class NewAddress extends React.Component {
 			},
 			body: JSON.stringify(newAddress)
 		})
+		.then(res => {
+			if (res.status === 201) {
+				this.setState({
+					open: true,
+					message: 'Address Saved Successfully'
+				})
+				let e;
+				this.props.handleChange(e, 0);
+			}
+			return res.json()
+		})
 	}
 
 	componentDidMount() {
 		this.getStates(this.props.baseUrl);
+		this.props.handleSteps(false);
 	}
 
 	handleChange(event) {
@@ -102,10 +108,11 @@ export default class NewAddress extends React.Component {
 	render() {
 		const {stateValue, city, locality,flatNo, show, drpdwn, pinCode, states, value, pinErrorMessage} = this.state;
 		return (
+			<>
 			<form className="root-main" onnoValidate autoComplete="off">
 
 			<FormControl>
-        <InputLabel htmlFor="flatNumber">Flat/Building flatNumber</InputLabel>
+        <InputLabel htmlFor="flatNumber">Flat/Building No.<sup>*</sup></InputLabel>
         <Input
           id="flatNumber"
           value={flatNo}
@@ -116,7 +123,7 @@ export default class NewAddress extends React.Component {
         {(show && !flatNo) && <FormHelperText id="error">required</FormHelperText>}
       </FormControl>
 			<FormControl>
-        <InputLabel htmlFor="locality">Locality</InputLabel>
+        <InputLabel htmlFor="locality">Locality<sup>*</sup></InputLabel>
         <Input
           id="locality"
           value={locality}
@@ -127,7 +134,7 @@ export default class NewAddress extends React.Component {
         {(show && !locality) && <FormHelperText id="error" className="field">required</FormHelperText>}
       </FormControl>
 			<FormControl>
-        <InputLabel htmlFor="city">City</InputLabel>
+        <InputLabel htmlFor="city">City<sup>*</sup></InputLabel>
         <Input
           id="city"
           value={city}
@@ -139,7 +146,7 @@ export default class NewAddress extends React.Component {
       </FormControl>
 
 			<FormControl>
-        <InputLabel id="label">State</InputLabel>
+        <InputLabel id="label">State<sup>*</sup></InputLabel>
 					<Select
 						labelId="label"
 						id="select"
@@ -151,7 +158,7 @@ export default class NewAddress extends React.Component {
 					{(show && !stateValue) && <FormHelperText id="error">required</FormHelperText>}
       </FormControl>
 			<FormControl>
-        <InputLabel htmlFor="pinCode">Pin code</InputLabel>
+        <InputLabel htmlFor="pinCode">Pin code<sup>*</sup></InputLabel>
         <Input
           id="pinCode"
           value={pinCode}
@@ -165,6 +172,21 @@ export default class NewAddress extends React.Component {
 					Save Address
 				</Button>
 			</form>
+			<Snackbar
+				anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'left',
+				}}
+				open={this.state.open}
+				autoHideDuration={60000}
+				onClose={this.handleClose}
+				message={this.state.message}
+				action={
+						<IconButton size="small" ariaLabel="close" color="inherit" onClick={this.handleClose}>
+								<CloseIcon fontSize="small" />
+						</IconButton>
+				}></Snackbar>
+			</>
 		);
 	}
 }

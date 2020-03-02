@@ -1,6 +1,7 @@
 .summary-main {
     width: 25%;
-    margin-top: 40px;
+		margin-top: 40px;
+		margin-bottom: 200px !important;
 }
 
 .card-content-checkout {
@@ -21,4 +22,11 @@
 
 .resturant-name {
     font-size: 18px;
+}
+
+@media screen and (max-width: 992px) {
+	.summary-main {
+		width: 90% !important;
+		margin: 0 auto;
+	}
 }

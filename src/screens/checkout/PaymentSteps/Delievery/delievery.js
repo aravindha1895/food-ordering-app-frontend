@@ -57,7 +57,7 @@ export default function Delievery(props) {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+        <Tabs value={value} onChange={handleChange} aria-label="tabs">
           <Tab label="Existing Addresses" {...a11yProps(0)} />
           <Tab label="New Address" {...a11yProps(1)} />
         </Tabs>
@@ -66,7 +66,7 @@ export default function Delievery(props) {
         <Address handleSteps={props.handleSteps} setDeliveryAddress={props.setDeliveryAddress} baseUrl={props.baseUrl}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <NewAddress baseUrl={props.baseUrl}/>
+        <NewAddress handleSteps={props.handleSteps} handleChange={handleChange} baseUrl={props.baseUrl}/>
       </TabPanel>
     </div>
   );

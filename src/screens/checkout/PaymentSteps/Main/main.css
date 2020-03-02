@@ -1,0 +1,8 @@
+@media screen and (max-width: 992px) {
+    .main-container {
+        flex-direction: column !important;
+    }
+    .root-container {
+        width: 90% !important;
+    }
+}

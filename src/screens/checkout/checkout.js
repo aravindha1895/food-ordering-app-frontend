@@ -7,7 +7,7 @@ export class checkout extends Component {
 		console.log(this.props.baseUrl)
 		return (
 			<div>
-				<Header baseurl={this.props.baseUrl} parentpage={"Home"} />
+				<Header baseurl={this.props.baseUrl} parentpage={"Checkout"} />
 				<Main props={this.props} baseUrl={this.props.baseUrl}/>
 			</div>
 		)

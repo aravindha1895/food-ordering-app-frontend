@@ -103,7 +103,8 @@ class Header extends Component {
       isDisplayLoginSnackBox: false,
       loginResponse: {},
       anchorEl: null,
-      loggedIn: sessionStorage.getItem("access-token") != null
+      loggedIn: sessionStorage.getItem("access-token") == null ? false : true,
+      loginInName: sessionStorage.getItem("login-name") != null ? sessionStorage.getItem("login-name") : ""
     });
   };
 
@@ -136,11 +137,15 @@ class Header extends Component {
     const accessToken = window.btoa(this.state.username + ":" + this.state.loginPassword);
     xhrLogin.addEventListener("readystatechange", function () {
       if (this.readyState === 4 && this.status === 200) {
-        console.log(this);
+        console.log(this); 
         console.log(this.responseText);
         sessionStorage.setItem("uuid", JSON.parse(this.responseText).id);
         debugger;
         sessionStorage.setItem("access-token", xhrLogin.getResponseHeader("access-token"));
+        sessionStorage.setItem("login-name", JSON.parse(this.responseText)["first_name"]);
+        context1.setState({
+          loginInName: JSON.parse(this.responseText)["first_name"]
+        });
 
         context1.setState({
           loggedIn: true
@@ -193,6 +198,7 @@ class Header extends Component {
         console.log(this.responseText);
         sessionStorage.removeItem("uuid");
         sessionStorage.removeItem("access-token");
+        sessionStorage.removeItem("login-name");
 
         context1.setState({
           loggedIn: false
@@ -345,7 +351,7 @@ class Header extends Component {
           {this.state.loggedIn && (
             <Button variant="contained" color="default" className="header-button header-profile-button" onClick={this.handleClick}>
               <AccountCircleIcon />
-              {this.state.loginResponse["first_name"]}
+              {this.state.loginInName}
             </Button>
           )}
 

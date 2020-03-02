@@ -77,7 +77,6 @@ class Header extends Component {
   componentDidMount() {
     const userData = JSON.parse(sessionStorage.getItem("userData"));
     if (userData !== null) {
-      debugger;
       this.setState({
         loggedIn: true,
         loginResponse: JSON.parse(userData),
@@ -184,7 +183,6 @@ class Header extends Component {
     xhrLogin.addEventListener("readystatechange", function () {
       if (this.readyState === 4 && this.status === 200) {
         sessionStorage.setItem("uuid", JSON.parse(this.responseText).id);
-        debugger;
         sessionStorage.setItem("access-token", xhrLogin.getResponseHeader("access-token"));
 
         context1.setState({

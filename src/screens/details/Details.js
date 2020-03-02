@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from '../../common/header/Header';
 import '../details/Details.css';
 import Typography from '@material-ui/core/Typography';
-import '../../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css'
+// impor\t '../../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css'
 import { Divider, Card, CardContent, CardHeader, Button } from '@material-ui/core';
 import Badge from '@material-ui/core/Badge';
 import AddIcon from '@material-ui/icons/Add';
@@ -34,7 +34,9 @@ class Details extends Component {
             countArr: [],
             open: false,
             message: '',
-        }
+				}
+				
+				this.clickCheckOutHandler = this.clickCheckOutHandler.bind(this)
     }
     componentWillMount() {
         let data = null;
@@ -131,7 +133,21 @@ class Details extends Component {
         } else if (sessionStorage.getItem('access-token') == null && totalcount === 0) {
             this.setState({ open: true });
             this.setState({ message: 'Please add an item to your cart!' });
-        }
+        } else {
+                let totalCartValue = 0;
+                this.state.itemObjArr.map((curritem, index) => (
+									totalCartValue = totalCartValue + (curritem.price * this.state.countArr[index])
+                ));
+                this.props.history.push({
+                    pathname: '/checkout',
+                    state: { 
+                        cartItems: this.state.itemObjArr, 
+                        totalCartValue: totalCartValue, 
+                        quantity: this.state.countArr,
+												resturantName: this.state.restaurantDetails.restaurant_name,
+												resturantId: this.state.restaurantDetails.id }
+                })
+            }
     }
 
     render() {
